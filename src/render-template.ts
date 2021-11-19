@@ -10,7 +10,8 @@ export async function renderTemplate(data: any, templateName: string, partsDirec
     let filenames = fs.readdirSync(partsDirectory);
     if (filenames && filenames.length) {
       filenames.forEach(function(filename: string) {
-        let matches = /^([^.]+).hbs$/.exec(filename);
+        let matches =
+          /^([^.]+).hbs$/.exec(filename) || /^([^.]+).css$/.exec(filename);
         if (!matches) {
           return;
         }
@@ -27,6 +28,7 @@ export async function renderTemplate(data: any, templateName: string, partsDirec
   });
 
   // renders the html template with the given data
+  data.debug=true;
   const rendered = template(data);
 
   return rendered;
