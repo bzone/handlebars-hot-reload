@@ -8,8 +8,8 @@ import { getCliArgs } from "./cli";
 import { renderTemplate } from "./render-template";
 import { createWatcher } from "./watcher";
 
-let HTTP_PORT = 5000;
-const WEBSOCKET_PORT = 5001;
+let HTTP_PORT = 5004;
+const WEBSOCKET_PORT = 5005;
 
 // Reading the client websocket code from ./client-websocket-reload.js
 const CLIENT_WEBSOCKET_CODE = fs.readFileSync(
@@ -19,7 +19,7 @@ const CLIENT_WEBSOCKET_CODE = fs.readFileSync(
 
 async function prepareTemplate(templatePath: string) {
   let templateData = {};
-
+let partsDir=partsDirectory?partsDirectory:"";
   // read the template's data if exists
   // dataPath = dataPath ? dataPath : templatePath.replace(/\.hbs$/, ".json");
   try {
@@ -30,11 +30,13 @@ async function prepareTemplate(templatePath: string) {
     console.log("No or corrupt template data found, continuing without data");
   }
 
+
+
   let html; // with the script
   let rawHtml; // without the script
   try {
     // rendering Handlebar template
-    rawHtml = await renderTemplate(templateData, templatePath);
+    rawHtml = await renderTemplate(templateData, templatePath, partsDir);
     html = rawHtml;
     // adding the hot reload script
     html += `\n\n<script>${CLIENT_WEBSOCKET_CODE}</script>`;
@@ -109,6 +111,7 @@ function startServer(): Closer {
 const {
   p: port,
   t: templatePath,
+  d: partsDirectory,
   j: _dataPath,
   s: saveOutput,
   o: _outputPath,

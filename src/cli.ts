@@ -25,6 +25,12 @@ export const getCliArgs = (processArgv: any) =>
         describe: "HTTP Port you want to serve the file",
         type: "number",
       },
+      d: {
+        alias: "partsDirectory",
+        demandOption: false,
+        describe: "If in use load partials .hbs files from dir",
+        type: "string",
+      },
       o: {
         alias: "outputPath",
         demandOption: false,
